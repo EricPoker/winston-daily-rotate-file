@@ -182,7 +182,7 @@ DailyRotateFile.prototype.name = 'dailyRotateFile';
 // #### @callback {function} Continuation to respond to when complete.
 // Core logging method exposed to Winston. Metadata is optional.
 //
-DailyRotateFile.prototype.log = function (level, msg, meta, callback) {
+DailyRotateFile.prototype.log = function (type, msg, callback) {
   if (this.silent) {
     return callback(null, true);
   }
@@ -198,22 +198,7 @@ DailyRotateFile.prototype.log = function (level, msg, meta, callback) {
 
   var self = this;
 
-  var output = common.log({
-    level: level,
-    message: msg,
-    meta: meta,
-    json: this.json,
-    colorize: this.colorize,
-    logstash: this.logstash,
-    prettyPrint: this.prettyPrint,
-    timestamp: this.timestamp,
-    label: this.label,
-    stringify: this.stringify,
-    showLevel: this.showLevel,
-    depth: this.depth,
-    formatter: this.formatter,
-    humanReadableUnhandledException: this.humanReadableUnhandledException
-  }) + this.eol;
+  var output = '[' + this.timestamp() + '] [' + type + '] [' + msg + ']' + this.eol;;
 
   this._size += output.length;
 
